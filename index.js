@@ -50,7 +50,12 @@ app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/menuItems", menuItemRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewRoutes);
- 
+app.use(session({
+  secret: 'your-secret-key', // Replace with a strong, secure key
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set to `true` if using HTTPS
+}));
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   connectDB();  

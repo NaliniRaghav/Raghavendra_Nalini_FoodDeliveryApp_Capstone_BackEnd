@@ -110,5 +110,46 @@ router.patch('/:id', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+// restaurantRoutes.js
+router.get('/', async (req, res) => {
+  try {
+    const { cuisine, city, rating, zipcode, sort, page = 1, limit = 10 } = req.query;
+
+    // Construct filters based on available query parameters
+    const filters = {};
+    if (cuisine) filters.cuisine = cuisine;
+    if (city) filters["address.city"] = city;
+    if (rating) filters.rating = { $gte: parseFloat(rating) };
+    if (zipcode) filters["address.zipCode"] = zipcode;  // Add zipcode filter
+
+    // Sort options
+    const sortOptions = sort === 'rating' ? { rating: -1 } : { name: 1 };
+
+    // Pagination
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+
+    // Fetch and filter restaurants from the database
+    const restaurants = await Restaurant.find(filters)
+      .sort(sortOptions)
+      .skip((pageNum - 1) * limitNum)
+      .limit(limitNum)
+      .populate('menuItems');
+
+    // Total count for pagination
+    const totalRestaurants = await Restaurant.countDocuments(filters);
+
+    res.status(200).json({
+      restaurants,
+      pagination: {
+        total: totalRestaurants,
+        page: pageNum,
+        pages: Math.ceil(totalRestaurants / limitNum),
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: `Error retrieving restaurants: ${error.message}` });
+  }
+});
 
 export default router;

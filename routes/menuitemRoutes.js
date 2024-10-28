@@ -117,7 +117,34 @@ router.patch('/:id/image', async (req, res) => {
     res.status(500).json({ message: 'Failed to update image', error });
   }
 });
+router.put('/me', async (req, res) => {
+  try {
+    // Assuming user is authenticated and their ID is available via req.user.id
+    const userId = req.user?.id; // replace this with the actual user ID if using auth middleware
 
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized: User ID not found" });
+    }
 
+    // Update user details
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      req.body, // Using the incoming body for updating
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    res.status(400).json({ error: `Error updating profile: ${error.message}` });
+  }
+});
 
 export default router;
+
+
+ 

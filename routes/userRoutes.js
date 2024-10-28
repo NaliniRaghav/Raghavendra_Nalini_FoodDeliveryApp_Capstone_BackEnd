@@ -2,7 +2,8 @@ import express from 'express';
 import User from '../models/user.js';
 
 const router = express.Router();
- 
+
+// Signup Route
 router.post('/signup', async (req, res) => {
   const { name, email, password, phone, address } = req.body;
   try {
@@ -18,101 +19,77 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-router.patch('/:id/contact', async (req, res) => {
-  const { street, city, state, zipCode, country, email, phone } = req.body;
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
- 
-    if (street) user.address.street = street;
-    if (city) user.address.city = city;
-    if (state) user.address.state = state;
-    if (zipCode) user.address.zipCode = zipCode;
-    if (country) user.address.country = country;
- 
-    if (email) user.email = email;
-    if (phone) user.phone = phone;
-
-    await user.save();
-    res.json({ message: 'Contact information updated successfully', user });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-router.put('/:id', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    
-    Object.assign(user, req.body);
-
-    await user.save();
-    res.json(user);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-
- 
+// Login Route
 router.post('/login', async (req, res) => {
   const { name, password } = req.body;
-  if (!name || !password) {
-    return res.status(400).json({ message: 'Name and password are required' });
-  }
-
   try {
     const user = await User.findOne({ name });
     if (!user || user.password !== password) {
       return res.status(400).json({ message: 'Invalid name or password' });
     }
 
-    req.session.userId = user._id;  
-  
+    req.session.userId = user._id; // Store the user ID in the session
     res.json({ message: 'Login successful', user });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Logout
-router.post('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) return res.status(500).json({ message: 'Failed to log out' });
-    res.json({ message: 'Logout successful' });
-  });
-});
-
-// Get profile (for authenticated user)
+ 
 router.get('/me', async (req, res) => {
-
-   
-
   try {
-   
-    console.log(req);
-    const user = await User.findById(req.session.userId).select('-password');
-   
+    const userId = req.session.userId;  
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+
+    const user = await User.findById(userId).select('-password'); 
     if (!user) return res.status(404).json({ message: 'User not found' });
+
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch user profile' });
   }
 });
 
-// Get all users
+// Update Profile
+router.put('/me', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+
+    // Get the existing user's email to check for changes
+    const existingUser = await User.findById(userId);
+    if (!existingUser) return res.status(404).json({ message: 'User not found' });
+
+    // If the email hasn't changed, remove it from the update to prevent unique validation error
+    const updateData = { ...req.body };
+    if (req.body.email === existingUser.email) {
+      delete updateData.email;  
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true, runValidators: true } 
+    );
+
+    res.status(200).json({ message: 'Profile updated successfully', updatedUser });
+  } catch (error) {
+    console.error("Profile update error:", error);
+    res.status(500).json({ message: 'Failed to update profile' });
+  }
+});
+
+// Get All Users
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select('-password');
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get a single user by ID
+// Get a Single User by ID
 router.get('/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password');
@@ -123,45 +100,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Update user contact details and address by user ID (partial update)
-router.patch('/:id/contact', async (req, res) => {
-  const { street, city, state, zipCode, country, email, phone } = req.body;
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
- 
-    if (street !== undefined) user.address.street = street;
-    if (city !== undefined) user.address.city = city;
-    if (state !== undefined) user.address.state = state;
-    if (zipCode !== undefined) user.address.zipCode = zipCode;
-    if (country !== undefined) user.address.country = country;
- 
-    if (email !== undefined) user.email = email;
-    if (phone !== undefined) user.phone = phone;
-
-    await user.save();
-    res.json({ message: 'Contact information updated successfully', user });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
- 
-router.put('/:id', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    Object.assign(user, req.body);
-    await user.save();
-
-    res.json(user);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
- 
+// Delete a User by ID
 router.delete('/:id', async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
