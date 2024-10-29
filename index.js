@@ -51,10 +51,10 @@ app.use("/api/menuItems", menuItemRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use(session({
-  secret: 'your-secret-key', // Replace with a strong, secure key
+  secret: 'your-secret-key',  
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Set to `true` if using HTTPS
+  cookie: { secure: false }  
 }));
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
