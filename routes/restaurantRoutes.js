@@ -195,6 +195,86 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: `Error retrieving restaurants: ${error.message}` });
   }
 });
+// Route to update a restaurant's image
+router.patch('/:id/image', async (req, res) => {
+  const { id } = req.params;
+  const { image } = req.body; // Get the new image URL from the request body
 
+  // Validate if an image URL is provided
+  if (!image) {
+    return res.status(400).json({ error: 'Image URL is required' });
+  }
+
+  try {
+    // Update the restaurant's image by ID
+    const restaurant = await Restaurant.findByIdAndUpdate(
+      id,
+      { image },
+      { new: true }  // Return the updated document
+    );
+
+    // Check if the restaurant exists
+    if (!restaurant) {
+      return res.status(404).json({ error: 'Restaurant not found' });
+    }
+
+    // Respond with success message and updated restaurant details
+    res.json({ message: 'Image updated successfully', restaurant });
+  } catch (error) {
+    console.error('Error updating image:', error);
+    res.status(500).json({ error: 'Failed to update image' });
+  }
+});
+
+ 
+
+// Route to create a new restaurant
+router.post('/', async (req, res) => {
+  try {
+    const newRestaurant = new Restaurant(req.body);
+    await newRestaurant.save();
+    res.status(201).json(newRestaurant);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Route to get a restaurant by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findById(req.params.id).populate('menuItems');
+    if (!restaurant) return res.status(404).json({ message: 'Restaurant not found' });
+    res.json(restaurant);
+  } catch (error) {
+    res.status(500).json({ error: `Error retrieving restaurant: ${error.message}` });
+  }
+});
+router.post('/:id/menuItems', async (req, res) => {
+  const { id } = req.params;
+  const { name, price, category, dietaryRestrictions } = req.body;
+
+  try {
+    const restaurant = await Restaurant.findById(id);
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+
+    const newMenuItem = new MenuItem({
+      name,
+      price,
+      category,
+      dietaryRestrictions,
+      restaurant: id,
+    });
+
+    await newMenuItem.save();
+    restaurant.menuItems.push(newMenuItem._id);
+    await restaurant.save();
+
+    res.status(201).json(newMenuItem);
+  } catch (error) {
+    res.status(400).json({ error: `Error creating menu item: ${error.message}` });
+  }
+});
 
 export default router;
