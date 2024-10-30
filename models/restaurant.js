@@ -25,8 +25,8 @@ const restaurantSchema = new mongoose.Schema({
   },
   rating: { type: Number, default: 0 },
   image: {
-    type: String,
-    default: '/images/placeholder.jpg',  
+    data: Buffer,  // Buffer to store binary image data
+    contentType: { type: String, default: 'image/jpeg' }  
   },
   menuItems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' }],  
 });

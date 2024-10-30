@@ -110,5 +110,28 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+router.post('/reset-password', async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  try {
+    // Use findOneAndUpdate to update only the password field
+    const user = await User.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { password: newPassword },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'Password successfully changed' });
+  } catch (error) {
+    console.error('Error in reset-password route:', error);
+    res.status(500).json({ message: 'An error occurred. Please try again later.' });
+  }
+});
+
+
 
 export default router;
