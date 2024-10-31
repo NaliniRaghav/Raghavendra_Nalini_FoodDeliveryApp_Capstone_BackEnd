@@ -145,3 +145,14 @@ GitHub Link: https://github.com/NaliniRaghav/Raghavendra_Nalini_FoodDeliveryApp_
 Conclusion:
 FoodOnTheFly provides a comprehensive platform for online food ordering and delivery, enabling users to browse restaurants, view menus, and place orders all within a single app. With both a strong back-end API and an interactive front-end, this app is well-suited for further expansion and enhancements.
 
+ Acknowledgments:
+
+A special thank you to my instructors at Per Scholas (https://perscholas.org/):
+
+- Mr. Colton Wright and Mr. Abraham E. Tavarez – MERN instructors, for their invaluable guidance and technical support.
+
+Resource:
+ 
+
+- (https://github.com/)
+- (https://www.youtube.com/)
