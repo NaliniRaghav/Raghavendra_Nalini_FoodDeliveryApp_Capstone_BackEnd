@@ -1,4 +1,4 @@
-
+CAPSTONE PROJECT -BACKEND
 FoodOnTheFly App
  
 FoodOnTheFly is a full-stack food delivery application using the MERN (MongoDB, Express, React, Node.js) stack. This app allows users to browse restaurants, view menus, place orders, and manage their profiles. The app also features an authentication system and a cart functionality for a seamless ordering experience.
@@ -144,3 +144,4 @@ GitHub Link: https://github.com/NaliniRaghav/Raghavendra_Nalini_FoodDeliveryApp_
 
 Conclusion:
 FoodOnTheFly provides a comprehensive platform for online food ordering and delivery, enabling users to browse restaurants, view menus, and place orders all within a single app. With both a strong back-end API and an interactive front-end, this app is well-suited for further expansion and enhancements.
+
