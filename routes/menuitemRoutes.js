@@ -119,8 +119,8 @@ router.patch('/:id/image', async (req, res) => {
 });
 router.put('/me', async (req, res) => {
   try {
-    // Assuming user is authenticated and their ID is available via req.user.id
-    const userId = req.user?.id; // replace this with the actual user ID if using auth middleware
+    // Assuming user is authenticated and their ID is available via req.user.id - replace this with the actual user ID if using auth middleware
+    const userId = req.user?.id;
 
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized: User ID not found" });
@@ -129,7 +129,7 @@ router.put('/me', async (req, res) => {
     // Update user details
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      req.body, // Using the incoming body for updating
+      req.body,  
       { new: true, runValidators: true }
     );
 
