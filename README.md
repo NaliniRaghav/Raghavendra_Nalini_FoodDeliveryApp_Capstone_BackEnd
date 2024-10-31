@@ -18,7 +18,7 @@ FoodOnTheFly allows users to:
 - Register and manage their profile information.
 - Browse through a variety of restaurants and their respective menus.
 - Place orders and manage their cart.
-- View past orders and their statuses.
+  
 
 The back end is powered by a RESTful API built with Express and MongoDB, and the front end uses React for an interactive user interface.
 
@@ -27,7 +27,9 @@ Database Structure
 The FoodOntheFly_Db database includes the following main collections:
 
 Users: Stores user data including login credentials, profile information, and addresses.
+
 Restaurants: Contains restaurant details like name, cuisine type, rating, and location.
+
 MenuItems: Holds menu item details for each restaurant, such as name, price, category, and dietary information.
 Orders: Stores user orders, including item details, quantity, total amount, and order status.
 
@@ -35,7 +37,8 @@ Orders: Stores user orders, including item details, quantity, total amount, and 
 
 Prerequisites
 
-  - Node.js and npm
+  - Node.js - JavaScript runtime environment
+  - npm - Node package Manager
   - MongoDB server
   - React installed on the client side
 
@@ -59,7 +62,7 @@ Steps
      
 
 3.  Environment Configuration
-    Create a '.env'file in the backed project directory and include:
+    Create a '.env'file in the backend project directory and include:
      
      MONGO_URI=<FoodOntheFly_Db>
      PORT=3000
@@ -124,8 +127,14 @@ DELETE /api/orders/:id: Delete an order by ID.
 
 Technologies Used:
 
-Front-End React: User interface and components. CSS: Styling for the React components and layout. React Router: Client-side routing for seamless navigation between pages.
-Back-End Node.js & Express: Server framework to build RESTful API. MongoDB & Mongoose: Database and ODM for handling data. Express Sessions: Session management for user authentication. Bcrypt.js: Password hashing for secure user authentication.
+Front-End - 
+React: User interface and components.
+CSS: Styling for the React components and layout.
+React Router: Client-side routing for seamless navigation between pages.
+Back-End -
+Node.js & Express: Server framework to build RESTful API.
+MongoDB & Mongoose: Database and OBJECT DATA MODELING for handling data.
+Express Sessions: Session management for user authentication.
 
 Future Enhancements
 
@@ -135,6 +144,7 @@ Restaurant Ratings and Reviews: Allow users to rate and review restaurants.
 Order History and Favorites: Enable users to save their favorite items and view order history.  
 Payment Gateway Integration: Integrate with payment services like Stripe or PayPal for seamless checkout.
 
+GitHub Link: https://github.com/NaliniRaghav/Raghavendra_Nalini_FoodDeliveryApp_Capstone_BackEnd
 
 Conclusion:
 FoodOnTheFly provides a comprehensive platform for online food ordering and delivery, enabling users to browse restaurants, view menus, and place orders all within a single app. With both a strong back-end API and an interactive front-end, this app is well-suited for further expansion and enhancements.
