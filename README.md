@@ -83,47 +83,43 @@ Steps
 
 API Endpoints
 
-Here is an overview of the available API routes.
+The available API routes are:
+Users API  
+POST /api/users/signup - To create a new user account.  
+POST /api/users/login - To log in an existing user.  
+GET /api/users/me - To get the current user profile.  
+PUT /api/users/me - To update the current user profile.  
+GET /api/users - To get all users.  
+GET /api/users/{user_id} - To get a single user by ID.  
+DELETE /api/users/{user_id} - To delete a user by ID.  
+POST /api/users/reset-password - To reset the user's password.  
 
-Users API
- 
-POST /api/users/signup: Register a new user.  
-POST /api/users/login: Log in a user.  
-POST /api/users/logout: Log out a user.  
-GET /api/users/me: Get profile of the currently logged-in user.  
-PATCH /api/users/:id/contact: Update user contact information by user ID.  
-PUT /api/users/:id: Update user profile by user ID.  
-DELETE /api/users/:id: Delete a user by ID.
+Restaurants API  
+GET /api/restaurants/cuisines - To get all unique cuisine types.  
+GET /api/restaurants/zipcodes - To get unique zip codes from restaurants.  
+POST /api/restaurants - To create a new restaurant.  
+GET /api/restaurants - To get a list of all restaurants.  
+GET /api/restaurants/{id} - To get a single restaurant by ID.  
+PATCH /api/restaurants/{id}/image - To update a restaurant's image.  
+POST /api/restaurants/{id}/menuItems - To add a menu item to a restaurant.  
+DELETE /api/restaurants/{id} - To delete a restaurant by ID.  
+GET /api/menuItems/restaurants/{restaurantId}/menu - To get menu items for a specific restaurant.  
 
- Restaurants API
+Menu Items API  
+POST /api/menuItems - To create a new menu item.  
+GET /api/menuItems - To get all menu items.  
+GET /api/menuItems/restaurants/:restaurantId/menu - To get menu items by restaurant ID.  
+GET /api/menuItems/:id - To get a single menu item by ID.  
+PUT /api/menuItems/:id - To update a menu item by ID.  
+DELETE /api/menuItems/:id - To delete a menu item by ID.  
+PATCH /api/menuItems/:id/image - To update a menu item's image.  
 
-POST /api/restaurants: Create a new restaurant
-GET /api/restaurants: Retrieve all restaurants, with optional filters for cuisine, city, rating, zipcode, and sorting options
-GET /api/restaurants/:id: Retrieve a specific restaurant by ID
-PATCH /api/restaurants/
-
-/image: Update a restaurant’s image
-POST /api/restaurants/
-
-/menuItems: Add a menu item to a restaurant by restaurant ID
-
-Menu Items API
-
-POST /api/menuItems: Create a new menu item.
-GET /api/menuItems: Retrieve all menu items, with an optional filter by restaurantId.
-GET /api/menuItems/restaurants/:restaurantId/menu: Retrieve all menu items for a specific restaurant by restaurantId.
-GET /api/menuItems/:id: Retrieve a specific menu item by ID.
-PATCH /api/menuItems/:id/image: Update menu item image by ID.
-PUT /api/menuItems/:id: Update a menu item by ID.
-DELETE /api/menuItems/:id: Delete a menu item by ID.
- 
-Order items API
-GET /api/orders: Retrieve all orders with details populated for users, restaurants, and items.
-GET /api/orders/:id: Retrieve a specific order by ID.
-POST /api/orders: Create a new order.
-PUT /api/orders/:id: Update an order by ID.
-DELETE /api/orders/:id: Delete an order by ID.
-
+Orders API  
+GET /api/orders - To get all order details.  
+GET /api/orders/:id - To get details of a specific order by ID.  
+POST /api/orders - To create a new order.  
+PUT /api/orders/:id - To update an existing order by ID.  
+DELETE /api/orders/:id - To delete an order by ID.  
 
 Technologies Used:
 
